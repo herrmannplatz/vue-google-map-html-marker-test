@@ -26,22 +26,30 @@ export default {
     }
   },
 
-  async mounted() {
-    const googleMapApi = await GoogleMapsApiLoader({
-      apiKey: this.apiKey
+  provide() {
+    const google = {}
+
+    Object.defineProperty(google, "api", {
+        enumerable: true,
+        get: () => this.google,
     })
-    this.google = googleMapApi
-    this.initializeMap()
+
+    Object.defineProperty(google, "map", {
+        enumerable: true,
+        get: () => this.map,
+    })
+
+    return { google }
   },
 
-  methods: {
-    initializeMap() {
-      const mapContainer = this.$refs.googleMap
-      this.map = new this.google.maps.Map(
-        mapContainer, this.mapConfig
-      )
-    }
+  async mounted() {
+    const googleMapApi = await GoogleMapsApiLoader({ apiKey: this.apiKey })
+    this.google = googleMapApi
+
+    const mapContainer = this.$refs.googleMap
+    this.map = new this.google.maps.Map(mapContainer, this.mapConfig)
   }
+
 }
 </script>
 

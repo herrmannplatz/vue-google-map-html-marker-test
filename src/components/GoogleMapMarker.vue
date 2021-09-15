@@ -4,17 +4,10 @@
   </div>
 </template>
 <script>
-// eslint-ignore
 export default {
+  inject: ['google'],
+
   props: {
-    google: {
-      type: Object,
-      required: true
-    },
-    map: {
-      type: Object,
-      required: true
-    },
     marker: {
       type: Object,
       required: true
@@ -22,7 +15,7 @@ export default {
   },
 
   mounted() {
-    const { OverlayView, LatLng } = this.google.maps
+    const { OverlayView, LatLng } = this.google.api.maps
     class HTMLMarker extends OverlayView {
       constructor({ map, position, element }) {
         super();
@@ -56,7 +49,7 @@ export default {
 
     new HTMLMarker({
       position: this.marker.position,
-      map: this.map,
+      map: this.google.map,
       element: this.$el
     })
 

@@ -3,30 +3,36 @@
     :mapConfig="mapConfig"
     :apiKey="null"
   >
-    <template slot-scope="{ google, map }">
-      <GoogleMapMarker
-        v-for="marker in markers"
-        :key="marker.id"
-        :marker="marker"
-        :google="google"
-        :map="map"
-      >
-        <div>
-          <button >hello {{ marker.id }}</button>
-        </div>
-      </GoogleMapMarker>
-    </template>
+    <GoogleMapMarker
+      v-for="marker in markers"
+      :key="marker.id"
+      :marker="marker"
+    >
+      <div class="marker"></div>
+    </GoogleMapMarker>
+
+    <GoogleMapGeoJSON 
+      geojson="https://raw.githubusercontent.com/topobyte/osm4j-examples/master/output/berlin-restaurant-density.geojson"
+      :styles="{ fillColor: 'red' }"
+    />
+
+    <GoogleMapGeoJSON 
+      geojson="https://raw.githubusercontent.com/blackmad/neighborhoods/master/gn-hamburg.geojson"
+      :styles="setGeoJSONStyles"
+    />
   </GoogleMapLoader>
 </template>
 
 <script>
 import GoogleMapLoader from "./GoogleMapLoader.vue";
 import GoogleMapMarker from "./GoogleMapMarker.vue";
+import GoogleMapGeoJSON from "./GoogleMapGeoJSON.vue";
 
 export default {
   components: {
     GoogleMapLoader,
-    GoogleMapMarker
+    GoogleMapMarker,
+    GoogleMapGeoJSON
   },
 
   data () {
@@ -38,10 +44,18 @@ export default {
     }
   },
 
+  methods: {
+    setGeoJSONStyles () {
+      return {
+        fillColor: Math.random() < 0.5 ? 'red' : 'blue',
+      };
+    }
+  },
+
   computed: {
     mapConfig () {
       return {
-        zoom: 12,
+        zoom: 6,
         center: this.mapCenter
       }
     },
@@ -52,3 +66,12 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.marker {
+  width: 4px;
+  height: 4px;
+  background: red;
+  border-radius: 50%;
+}
+</style>
