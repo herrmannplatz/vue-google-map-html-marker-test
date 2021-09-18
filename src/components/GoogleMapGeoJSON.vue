@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  inject: ['google'],
+  inject: ['loader'],
 
   data () {
     return {
@@ -25,7 +25,7 @@ export default {
   methods: {
     getDataLayer () {
       if (!this.dataLayer) {
-        this.dataLayer = new this.google.api.maps.Data({ map: this.google.map })
+        this.dataLayer = new this.loader.google.maps.Data({ map: this.loader.map })
       }
       return this.dataLayer
     }
@@ -36,13 +36,15 @@ export default {
       handler(value) {
         this.getDataLayer().loadGeoJson(value)
       },
-      immediate: true
+      immediate: true,
+      deep: true
     },
     styles: {
       handler(value) {
         this.getDataLayer().setStyle(value)
       },
-      immediate: true
+      immediate: true,
+      deep: true
     },
   },
 

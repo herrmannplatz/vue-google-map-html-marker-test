@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import GoogleMapsApiLoader from 'google-maps-api-loader'
+import { Loader } from '@googlemaps/js-api-loader';
 
 export default {
   props: {
@@ -27,23 +27,24 @@ export default {
   },
 
   provide() {
-    const google = {}
+    const loader = {}
 
-    Object.defineProperty(google, "api", {
+    Object.defineProperty(loader, "google", {
         enumerable: true,
         get: () => this.google,
     })
 
-    Object.defineProperty(google, "map", {
+    Object.defineProperty(loader, "map", {
         enumerable: true,
         get: () => this.map,
     })
 
-    return { google }
+    return { loader }
   },
 
   async mounted() {
-    const googleMapApi = await GoogleMapsApiLoader({ apiKey: this.apiKey })
+    const loader = new Loader({ apiKey: this.apiKey, libraries: ["places"] });
+    const googleMapApi = await loader.load()
     this.google = googleMapApi
 
     const mapContainer = this.$refs.googleMap

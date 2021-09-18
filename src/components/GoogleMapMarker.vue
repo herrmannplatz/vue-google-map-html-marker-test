@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-  inject: ['google'],
+  inject: ['loader'],
 
   props: {
     marker: {
@@ -15,7 +15,7 @@ export default {
   },
 
   mounted() {
-    const { OverlayView, LatLng } = this.google.api.maps
+    const { OverlayView, LatLng } = this.loader.google.maps
     class HTMLMarker extends OverlayView {
       constructor({ map, position, element }) {
         super();
@@ -49,7 +49,7 @@ export default {
 
     new HTMLMarker({
       position: this.marker.position,
-      map: this.google.map,
+      map: this.loader.map,
       element: this.$el
     })
 
